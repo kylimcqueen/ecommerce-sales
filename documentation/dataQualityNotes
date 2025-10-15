@@ -1,0 +1,109 @@
+# Data Quality Notes
+
+## Initial Exploration - 10/12/2025
+
+### Amazon Sales ('amazonSales')
+- **Rows:** ~129,000
+- **Date range:** 3/31/2022 - 6/29/2022
+- **Currency:** INR (Indian Rupees)
+- **Primary Key:** Composite key (Order_ID, SKU)
+- **Key Observations:**
+  - Majority of sales are B2B transactions
+  - Contains detailed fulfillment and shipping information
+
+### International Sales ('internationalSales')
+- **Rows:** ~36,000 (after segment cleaning)
+- **Date range:** 3/31/2022 - 6/29/2022
+- **Currency:** INR (assumed)
+- **Key Observations:**
+  - No Order_ID field (different data structure than Amazon)
+
+### Product Master ('productMaster')
+- Rows: ~9,000
+- **Key Observations:**
+  - Product catalog with categories, sizes, colors, stock levels
+  - Links to sales tables via SKU
+
+---
+
+## Initial Exploration - 10/12/2025
+
+### Major Issues
+
+**Files Excluded from Analysis:**
+- **Pricing March 2023 & May 2022:** Duplicate data despite different date labels. Same SKUs, same prices, same row counts. Excluded as unreliable and not needed for sales trend analysis.
+- **Cloud Warehouse Comparison Chart:** Contract document, not transactional data
+- **Expense IIGF:** Operational expense report, not sales data
+
+**International Sales Data Corruption:**
+- Original file contained improperly merged data segments
+- Rows 18,637-19,676 contained non-transactional data (SKU lists, inventory snapshots)
+- Manually cleaned to extract two valid sales segments and standardize structure
+- Final structure focuses on common fields across segments
+
+### Basic Data Cleaning in Excel
+
+#### International Sales ('internationalSales')
+- Original file contained improperly merged data segments
+- Rows 18,637-19,676 contained non-transactional data (SKU lists, inventory snapshots)
+- Manually cleaned to extract two valid sales segments and standardize structure
+- Final structure focuses on common fields across segments
+
+- Found an instance of duplicated customer names where one version was fully capitalized and the other version was normal
+- All records of normalized capitalization had missing SKU values
+- Removed these rows from the table given that a composite key field is missing
+
+#### Product Master ('productMaster')
+- Noted that index values continued 36 rows after all other fields
+- Deleted these rows to make the table continuous
+
+- Oriignal file contained rows where SKU value was "#REF!"
+- Deleted these rows 
+
+---
+
+## Primary Key Validation - 10/15/2025
+
+### SQL Analysis Results
+
+**amazonSales:**
+- Total rows: 128,975
+- Missing Order ID: 0
+- Missing SKU: 0
+- **Rows to remove:**  0
+- **Rationale:** Composite primary key (Order_ID, SKU) requires both fields
+
+**internationalSales:**
+- Total rows: 36,361
+- Missing Date: 0
+- Missing Customer: 0
+- Missing SKU: 1404
+- Non-product SKU values: 516 ("TAGS", "SHIPPING", etc)
+- **Rows to remove:** 1404 
+- **Rationale:** Composite primary key (Date, Customer, SKU) requires all three fields
+
+**productMaster:**
+- Total rows: 9,220
+- Missing SKU Code: 47
+- **Rows to remove:** 47
+- **Rationale:** SKU Code is primary key; products cannot be identified without it
+
+**For comprehensive issue tracking, see [Salees Issue Log](documentation/eCommerceSalesIssueLog.xlsx)`**
+
+## Final Clean Dataset Summary - 10/15/2025
+
+**Tables for Analysis:**
+1. **amazonSales_clean:** 128,975 rows
+2. **internationalSales_clean:** 34,441 rows  
+3. **productMaster_clean:** 9,173 rows
+
+**Total transaction records:** ~165,000
+
+**Combined date coverage:** July 2021 - June 2022 (approximately 12 months)
+
+**Data removed:**
+- Total primary key violations: 1967 rows total (1.13%)
+- Non-transactional files: 4 files excluded
+- Corrupted segments: ~1,000 rows from internationalSales
+
+---

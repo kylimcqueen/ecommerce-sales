@@ -1,0 +1,16 @@
+-- =====================================================
+-- IMPORT RAW DATA
+-- =====================================================
+-- Import CSVs using DB Browser for SQLite:
+-- File → Import → Table from CSV file
+--
+-- Files imported:
+-- - Amazon Sale Report.csv → amazonSales
+-- - International sale Report.csv → internationalSales  
+-- - Product Master.csv → productMaster
+--
+-- Import settings:
+-- - Encoding: UTF-8
+-- - Field separator: comma
+-- - Column names in first line: YES
+-- =====================================================

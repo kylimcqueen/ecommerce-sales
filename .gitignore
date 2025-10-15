@@ -1,0 +1,7 @@
+ecommerce_analysis.db
+ecommerce_analysis.db-journal
+# Ignore all SQLite Database Files and their temporary/journal files
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
