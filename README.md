@@ -102,7 +102,7 @@ For detailed technical implementation:
 **Next Steps:**
 - [X] Download and explore data
 - [X] Create ERD
-- [ ] Write SQL cleaning scripts
+- [X] Write SQL cleaning scripts
 - [ ] Build Tableau dashboard
 - [ ] Complete analysis and insights
 - [ ] Finalize recommendations
