@@ -35,14 +35,16 @@ FROM internationalSales
 WHERE SKU IN ('TAGS', 'TAGS(LABOUR)', 'TAG PRINTING', 'SHIPPING CHARGES', 'SHIPPING')
 GROUP BY SKU;
 
--- Check international_sales for blank SKU, Date, Customer
+-- Check international_sales for blank SKU, Date, Customer and nonsensical values
 SELECT 
     COUNT(*) as total_rows,
+	SUM(CASE WHEN SKU IN ('TAGS', 'TAGS(LABOUR)', 'TAG PRINTING', 'SHIPPING CHARGES', 'SHIPPING') THEN 1 ELSE 0 END) as impossible_sku,
     SUM(CASE WHEN DATE IS NULL OR DATE = '' THEN 1 ELSE 0 END) as blank_date,
     SUM(CASE WHEN CUSTOMER IS NULL OR CUSTOMER = '' THEN 1 ELSE 0 END) as blank_customer,
     SUM(CASE WHEN SKU IS NULL OR SKU = '' THEN 1 ELSE 0 END) as blank_sku,
     SUM(CASE WHEN (DATE IS NULL OR DATE = '') OR (CUSTOMER IS NULL OR CUSTOMER = '') OR (SKU IS NULL OR SKU = '')  OR (SKU IN ('TAGS', 'TAGS(LABOUR)', 'TAG PRINTING', 'SHIPPING CHARGES', 'SHIPPING')) THEN 1 ELSE 0 END) as rows_to_delete
 FROM internationalSales;
+
 
 
 -- Look at examples

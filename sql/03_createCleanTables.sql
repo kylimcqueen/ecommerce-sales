@@ -19,8 +19,26 @@ WHERE "SKU Code" IS NOT NULL
 
 -- AMAZON SALES
 -- Remove rows with missing Order ID or SKU
+-- Format date column in an SQL-readable way
 CREATE TABLE amazonSales_clean AS
-SELECT *
+SELECT 
+    "Order ID",
+    SKU,
+    -- Create properly formatted date
+    substr("Date", -4) || '-' ||  
+    printf('%02d', CAST(substr("Date", 1, instr("Date", '/') - 1) AS INTEGER)) || '-' ||  
+    printf('%02d', CAST(substr("Date", instr("Date", '/') + 1, 
+                               instr(substr("Date", instr("Date", '/') + 1), '/') - 1) AS INTEGER)) AS sale_date,
+    Qty,
+    Amount,
+    Fulfilment,
+    B2B,
+    Status,
+    currency,
+	Style,
+	Category,
+	Size,
+	B2B
 FROM amazonSales
 WHERE "Order ID" IS NOT NULL 
   AND TRIM("Order ID") != ''
@@ -30,17 +48,29 @@ WHERE "Order ID" IS NOT NULL
 
 -- INTERNATIONAL SALES
 -- Remove rows with missing key fields AND non-product SKU values
+-- Fomat date correctly
 CREATE TABLE internationalSales_clean AS
-SELECT *
+SELECT 
+    -- Create properly formatted date (using double quotes on "DATE")
+    substr("DATE", -4) || '-' ||  
+    printf('%02d', CAST(substr("DATE", 1, instr("DATE", '/') - 1) AS INTEGER)) || '-' ||  
+    printf('%02d', CAST(substr("DATE", instr("DATE", '/') + 1, 
+                               instr(substr("DATE", instr("DATE", '/') + 1), '/') - 1) AS INTEGER)) AS sale_date,
+    CUSTOMER,
+    Style,
+    SKU,
+    PCS,
+    RATE,
+    "GROSS AMT"
 FROM internationalSales
 WHERE SKU IS NOT NULL 
   AND TRIM(SKU) != ''
-  AND DATE IS NOT NULL
-  AND TRIM(DATE) != ''
+  AND "DATE" IS NOT NULL  -- Double quotes
+  AND TRIM("DATE") != ''
   AND CUSTOMER IS NOT NULL
   AND TRIM(CUSTOMER) != ''
-  -- Remove non-product entries 
-  AND SKU NOT IN ('TAGS', 'TAGS(LABOUR)', 'TAG PRINTING', 'SHIPPING CHARGES', 'SHIPPING');
+  AND SKU NOT IN ('TAGS', 'TAGS(LABOUR)', 'TAG PRINTING', 
+                  'SHIPPING CHARGES', 'SHIPPING');
 
 -- =====================================================
 -- VERIFICATION: Check row counts
@@ -65,3 +95,29 @@ SELECT 'internationalSales' as table_name,
        (SELECT COUNT(*) FROM internationalSales) as original_rows,
        (SELECT COUNT(*) FROM internationalSales_clean) as clean_rows,
        (SELECT COUNT(*) FROM internationalSales) - (SELECT COUNT(*) FROM internationalSales_clean) as rows_removed;
+
+-- =====================================================
+-- Sanity check: See date ranges for amazonSales_clean and internationalSales_clean
+-- =====================================================
+
+-- See date ranges for amazonSales_clean table
+SELECT
+	MIN(sale_date) AS earliest_sale,
+	MAX(sale_date) AS latest_sale,
+	COUNT(*) AS total_rows
+FROM
+	amazonSales_clean
+	
+--Earliest date 3/31/22 and latest date 6/29/22, as expected
+
+
+-- See date ranges for internationalSales_clean table
+
+SELECT
+	MIN(sale_date) AS earliest_sale,
+	MAX(sale_date) AS latest_sale,
+	COUNT(*) AS total_rows
+FROM
+	internationalSales_clean
+	
+-- Earliest date 6/5/21 and latest date 3/31/22, different from date range prior to data cleaning

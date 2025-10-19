@@ -90,3 +90,51 @@ SELECT
     COUNT(DISTINCT sale_date) as days_with_sales,
     COUNT(DISTINCT sku) as unique_products_sold
 FROM unified_sales;
+
+-------------------------------------------------------------------------------------------------
+-- Sanity checks 
+
+-- VIEW 1
+-- Check monthly sales trend
+SELECT * FROM monthly_sales;
+
+-- I have about 12 months of  data
+-- Overall sales amounts look reasonable, with values around millions per month
+-- General upward trend in monthly sales  over time
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+-- VIEW 2
+-- Check seasonal patterns
+SELECT * FROM sales_by_month;
+
+-- I have exactly 12 rows of data, with each row representing one month of the year
+
+-- Which months have highest sales?
+--April, May and June have sales by far, but it is likely because these months contain data from 2021 and 2022 while the other months only
+--contain data for one of the two years.
+
+--------------------------------------------------------------------------------------------------------------------------------
+-- VIEW 3
+-- Check category breakdown
+SELECT * FROM category_performance;
+
+--Kurta set, kurta, and set are the categories with the highest total sales. They also have highest numbers of unique products.
+-- They account for the highest percentages of overall sales.
+--The item with the highest transaction value was lehenga choli, but it was only 0.65% of total sales.
+
+-- Check what percentage of total sales each category makes up
+SELECT 
+	SUM(pct_of_total_sales) as total_percents
+FROM category_performance
+
+--Adding up all the percentages gives 95.53, so not all sales are represented in the data.
+-- There are 19 total categories.
+--------------------------------------------------------------------------------------------------------------------------------
+
+-- VIEW 4
+-- Check overall summary
+SELECT * FROM summary_stats;
+--Everything looks correct
+
+
