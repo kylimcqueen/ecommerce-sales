@@ -13,7 +13,7 @@
 
 ### International Sales ('internationalSales')
 - **Rows:** ~36,000 (after segment cleaning)
-- **Date range:** 3/31/2022 - 6/29/2022
+- **Date range:** 6/5/2021 - 5/11/2022
 - **Currency:** INR (assumed)
 - **Key Observations:**
   - No Order_ID field (different data structure than Amazon)
@@ -83,6 +83,7 @@
 - **Rows to remove:**  0
 - **Rationale:** Composite primary key (Order_ID, SKU) requires both fields
 - Final row count: 128,975
+- **Date range:** 3/31/2022 - 6/29/2022
 
 **internationalSales:**
 - Total rows: 36,361
@@ -93,6 +94,7 @@
 - **Rows to remove:** 1920
 - **Rationale:** Composite primary key (Date, Customer, SKU) requires all three fields
 - Final row count: 34,441
+- **Date range:** 6/5/2021 - 3/31/2022
 
 **productMaster:**
 - Total rows: 9,220
@@ -108,13 +110,13 @@
 2. **internationalSales_clean:** 34,441 rows  
 3. **productMaster_clean:** 9,173 rows
 
-**Total transaction records:** ~165,000
-
-**Combined date coverage:** July 2021 - June 2022 (approximately 12 months)
+**Total transaction records:** ~163,000
 
 **Data removed:**
 - Total primary key violations: 1967 rows total (1.13%)
 - Non-transactional files: 4 files excluded
 - Corrupted segments: ~1,000 rows from internationalSales
+
+***Address change in dates
 
 ---
