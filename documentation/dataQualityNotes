@@ -43,22 +43,32 @@
 
 ### Basic Data Cleaning in Excel
 
-#### International Sales ('internationalSales')
-- Original file contained improperly merged data segments
-- Rows 18,637-19,676 contained non-transactional data (SKU lists, inventory snapshots)
-- Manually cleaned to extract two valid sales segments and standardize structure
-- Final structure focuses on common fields across segments
+**amazonSales:**
+- Total rows: 128,975
+- Issues: Nothing significant to be removed at this stage.
+- Rows to remove: 0
+- **Final row count:** 128,975
 
-- Found an instance of duplicated customer names where one version was fully capitalized and the other version was normal
-- All records of normalized capitalization had missing SKU values
-- Removed these rows from the table given that a composite key field is missing
+**internationalSales:**
+- Total rows: 37,432
+- Issues:
+  - Original file contained improperly merged data segments. Rows 18,636-19,677 contained non-transactional data (SKU lists, inventory snapshots). 1041 rows affected.
+  - Found an instance of duplicated customer names where one version was fully capitalized and the other version was normal. All records of normalized capitalization had missing SKU values. 30 rows affected.
+- **Rows to remove:** 1071
+- **Rationale:** SKU is a necessary field
+- **Final row count:** 36,361
 
-#### Product Master ('productMaster')
-- Noted that index values continued 36 rows after all other fields
-- Deleted these rows to make the table continuous
+**productMaster:**
+- Total rows: 9,271
+- Issues:
+  - #REF value instead of SKU code. 15 rows affected.
+  - Rows are blank except for the index column at the end of the table, which artificially increases number of rows. 36 rows affected.
+- **Rows to remove:** 51
+- **Rationale:** SKU Code is primary key; products cannot be identified without it
+- **Final row count:** 9,220
 
-- Oriignal file contained rows where SKU value was "#REF!"
-- Deleted these rows 
+**For comprehensive issue tracking, see [Sales Issue Log](documentation/eCommerceSalesIssueLog.xlsx)**
+
 
 ---
 
@@ -87,8 +97,6 @@
 - Missing SKU Code: 47
 - **Rows to remove:** 47
 - **Rationale:** SKU Code is primary key; products cannot be identified without it
-
-**For comprehensive issue tracking, see [Salees Issue Log](documentation/eCommerceSalesIssueLog.xlsx)`**
 
 ## Final Clean Dataset Summary - 10/15/2025
 
