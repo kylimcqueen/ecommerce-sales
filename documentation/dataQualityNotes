@@ -82,6 +82,7 @@
 - Missing SKU: 0
 - **Rows to remove:**  0
 - **Rationale:** Composite primary key (Order_ID, SKU) requires both fields
+- Final row count: 128,975
 
 **internationalSales:**
 - Total rows: 36,361
@@ -89,14 +90,16 @@
 - Missing Customer: 0
 - Missing SKU: 1404
 - Non-product SKU values: 516 ("TAGS", "SHIPPING", etc)
-- **Rows to remove:** 1404 
+- **Rows to remove:** 1920
 - **Rationale:** Composite primary key (Date, Customer, SKU) requires all three fields
+- Final row count: 34,441
 
 **productMaster:**
 - Total rows: 9,220
 - Missing SKU Code: 47
 - **Rows to remove:** 47
 - **Rationale:** SKU Code is primary key; products cannot be identified without it
+- Final row count: 9,173
 
 ## Final Clean Dataset Summary - 10/15/2025
 
