@@ -5,10 +5,10 @@
 This project analyzes e-commerce sales data from an Indian online fashion retailer. 
 
 ### Business Problem 
-The company needs to understand historical sales patterns to forecast future demand and optimize inventory planning. Without clear visibility into sales trends, the business risks overstocking slow-moving items or running out of popular products.
+The company needs to understand historical sales patterns to identify sales trends and seasonal patterns. Without clear visibility into sales trends, the business risks overstocking slow-moving items or running out of popular products.
 
 ### My Goal 
-Analyze 166,000+ transactions to identify sales trends, seasonal patterns, and create a 6-month sales forecast to support data-driven inventory decisions.
+Analyze 163,000+ transactions to identify sales trends, seasonal patterns, and create a 6-month sales forecast to support data-driven inventory decisions.
 
 ### Tools Used 
 Excel (data exploration), SQL (data cleaning and transformation), Tableau (visualization and dashboards)
@@ -21,8 +21,8 @@ Excel (data exploration), SQL (data cleaning and transformation), Tableau (visua
 
 The dataset consists of 3 interconnected tables:
 
+- **International Sales** (`internationalSales`): ~37K international transactions (June 2021 - March 2022)
 - **Amazon Sales** (`amazonSales`): ~129K transactions from Amazon marketplace (March 2022 - June 2022)
-- **International Sales** (`internationalSales`): ~37K international transactions (June 2021 - May 2022)
 - **Product Master** (`productMaster`): Product catalog including SKU, category, size, color, and stock levels
 
 
@@ -37,12 +37,20 @@ For detailed SQL queries and data transformation steps, see the [Technical Docum
 
 ## Caveats and Assumptions
 
-### Data Structure Challenges
+### Temporal Coverage & Channel Overlap
 
-**Inconsistent Time Periods:**
-- Amazon Sales: March-June 2022 (4 months, 129K transactions)
-- International Sales: July 2021-May 2022 (11 months, 37K transactions)
-- Combined coverage: July 2021-June 2022 (15 months total)
+**Date Ranges:**
+- International Sales: June 2021 - March 2022 (10 months)
+- Amazon Sales: March 2022 - June 2022 (4 months)
+- **Overlap:** One day only (March 31, 2022)
+
+**Root Cause:** Data cleaning removed April-May 2022 International Sales due to 
+missing SKU values (corrupted data segments identified during initial cleaning).
+
+**Impact:** Direct channel comparison not feasible due to minimal temporal overlap. 
+Analysis focused on overall trends, seasonality, and category performance.
+
+### Data Structure Challenges
 
 **Schema Differences:**
 The two sales channels have different data structures:
@@ -51,12 +59,6 @@ The two sales channels have different data structures:
 
 **Approach:** Created a unified sales view focusing on common fields (SKU, Date, 
 Quantity, Amount, Channel) to enable time-series analysis. Channel-specific analyses were performed separately where detailed fields were needed.
-
-**Forecasting Limitations:**
-- 15 months of historical data is on the lower end for robust forecasting
-- Data structure inconsistencies may affect accuracy
-- Forecast should be considered directional rather than precise
-- External factors (market conditions, competition, seasonality) not accounted for
 
 **International Sales Data Structure:**
 The original International Sales CSV contained corrupted data segments 
@@ -79,6 +81,15 @@ dataset still contains ~36,000 international sales transactions.
 to both sources (Date, Customer, SKU, Quantity, Amount). Product size and Stock can 
 be retrieved by joining to Product Master via SKU when needed. 
 
+### Category Analysis Data Completeness
+
+**Missing SKU Analysis:** ~4.7% of sales lack matching SKUs in Product Master
+- 674 unique SKUs (legitimate product codes)
+- Concentrated in Amazon channel (April-June 2022)
+- Likely represents new products added after Product Master catalog snapshot
+- Excluded from category-level analysis; overall trends unaffected
+- 95.3% of sales successfully categorized
+  
 ### Data Quality
 
 - **Missing Order IDs**: International sales lack order identifiers, preventing 
