@@ -5,10 +5,10 @@
 This project analyzes e-commerce sales data from an Indian online fashion retailer. 
 
 ### Business Problem 
-The company needs to understand historical sales patterns to forecast future demand and optimize inventory planning. Without clear visibility into sales trends, the business risks overstocking slow-moving items or running out of popular products.
+The company needs to understand historical sales patterns to identify sales trends and seasonal patterns. Without clear visibility into sales trends, the business risks overstocking slow-moving items or running out of popular products.
 
 ### My Goal 
-Analyze 166,000+ transactions to identify sales trends, seasonal patterns, and create a 6-month sales forecast to support data-driven inventory decisions.
+Analyze 163,000+ transactions to identify sales trends, seasonal patterns, and create a 6-month sales forecast to support data-driven inventory decisions.
 
 ### Tools Used 
 Excel (data exploration), SQL (data cleaning and transformation), Tableau (visualization and dashboards)
@@ -21,8 +21,8 @@ Excel (data exploration), SQL (data cleaning and transformation), Tableau (visua
 
 The dataset consists of 3 interconnected tables:
 
+- **International Sales** (`internationalSales`): ~37K international transactions (June 2021 - March 2022)
 - **Amazon Sales** (`amazonSales`): ~129K transactions from Amazon marketplace (March 2022 - June 2022)
-- **International Sales** (`internationalSales`): ~37K international transactions (June 2021 - May 2022)
 - **Product Master** (`productMaster`): Product catalog including SKU, category, size, color, and stock levels
 
 
@@ -37,55 +37,34 @@ For detailed SQL queries and data transformation steps, see the [Technical Docum
 
 ## Caveats and Assumptions
 
-### Data Structure Challenges
+### Data Source & Scope
+- Public Kaggle dataset; company name anonymized
+- Analysis period: June 2021 - June 2022 (13 months)
+- 163,000+ transactions across two sales channels
 
-**Inconsistent Time Periods:**
-- Amazon Sales: March-June 2022 (4 months, 129K transactions)
-- International Sales: July 2021-May 2022 (11 months, 37K transactions)
-- Combined coverage: July 2021-June 2022 (15 months total)
+### Temporal Coverage
+- **International Sales:** June 2021 - March 2022 (10 months, 34K transactions)
+- **Amazon Sales:** March 2022 - June 2022 (4 months, 129K transactions)
+- **Minimal overlap** (1 day) prevents direct channel comparison
+- Root cause: April-May 2022 International data removed during cleaning due to 
+  corrupted file segments with missing SKU values
 
-**Schema Differences:**
-The two sales channels have different data structures:
-- Amazon includes: Order ID, fulfillment method, B2B flag, detailed shipping info
-- International includes: Customer name, but lacks order-level identifiers
+### Data Completeness
+- **Category Analysis:** ~5% of sales lack matching SKU in Product Master 
+  (likely new products added after catalog snapshot); excluded from category 
+  analysis
+- **Currency:** All values assumed INR
+- **Schema Differences:** Channels have different data structures; unified 
+  on common fields (Date, SKU, Quantity, Amount)
 
-**Approach:** Created a unified sales view focusing on common fields (SKU, Date, 
-Quantity, Amount, Channel) to enable time-series analysis. Channel-specific analyses were performed separately where detailed fields were needed.
+### Analysis Focus
+Given data limitations, analysis focuses on:
+- Overall sales trends (13-month view)
+- Seasonal patterns (aggregated across channels)
+- Category performance (95% coverage)
 
-**Forecasting Limitations:**
-- 15 months of historical data is on the lower end for robust forecasting
-- Data structure inconsistencies may affect accuracy
-- Forecast should be considered directional rather than precise
-- External factors (market conditions, competition, seasonality) not accounted for
-
-**International Sales Data Structure:**
-The original International Sales CSV contained corrupted data segments 
-due to improper merging of multiple data sources. The file included:
-- Rows 1-18,636: Valid sales transactions
-- Rows 18,637-18,661: Orphaned SKU list (removed)
-- Rows 18,662-19,676: Inventory stock data (removed)  
-- Rows 19,677+: Additional sales transactions with reordered columns 
-  (Restructured to match original schema)
-
-Additionally, the two valid segments of the International Sales CSV contained slightly
-different schemas. Segment 1 included a Size column whereas Segment 4 did not. Segment 4
-included a Stock column whereas Segment 1 did not. 
-
-**Cleaning approach:** Isolated valid transaction segments, standardized 
-column structure, and removed non-transactional data. Final cleaned 
-dataset still contains ~36,000 international sales transactions.
-
-**Standardization approach:** Focused on core transactional fields common 
-to both sources (Date, Customer, SKU, Quantity, Amount). Product size and Stock can 
-be retrieved by joining to Product Master via SKU when needed. 
-
-### Data Quality
-
-- **Missing Order IDs**: International sales lack order identifiers, preventing 
-  order-level analysis for that channel
-- **Date Range**: 6/5/2021 - 6/29/2022
-- **Currency**: All sales listed as INR in Amazon Sales dataset. Currency not listed in International Sales CSV. Assumed INR.
-
+*For detailed data quality assessment and cleaning decisions, see 
+[Data Quality Notes](documentation/data_quality_notes.md)*
 ---
 
 ## Technical Documentation
