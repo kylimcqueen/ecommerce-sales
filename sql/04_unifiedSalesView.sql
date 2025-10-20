@@ -19,17 +19,12 @@ CREATE VIEW unified_sales AS
 SELECT 
     "Order ID" as order_id,
     SKU as sku,
-    -- Convert M/D/YYYY to YYYY-MM-DD format
-    substr(Date, -4) || '-' ||  
-    printf('%02d', CAST(substr(Date, 1, instr(Date, '/') - 1) AS INTEGER)) || '-' ||  
-    printf('%02d', CAST(substr(Date, instr(Date, '/') + 1, 
-                               instr(substr(Date, instr(Date, '/') + 1), '/') - 1) AS INTEGER)) as sale_date,
+	sale_date,
     Qty as quantity,
     Amount as sales_amount,
     'Amazon' as channel,
     B2B as is_b2b,
-    NULL as customer,
-    Fulfilment as fulfillment_method
+    NULL as customer
 FROM amazonSales_clean
 
 UNION ALL
@@ -38,22 +33,19 @@ UNION ALL
 SELECT 
     NULL as order_id,
     SKU as sku,
-    -- Convert M/D/YYYY to YYYY-MM-DD format
-    substr(DATE, -4) || '-' ||  
-    printf('%02d', CAST(substr(DATE, 1, instr(DATE, '/') - 1) AS INTEGER)) || '-' ||  
-    printf('%02d', CAST(substr(DATE, instr(DATE, '/') + 1, 
-                               instr(substr(DATE, instr(DATE, '/') + 1), '/') - 1) AS INTEGER)) as sale_date,
+	sale_date,
     PCS as quantity,
     "GROSS AMT" as sales_amount,
     'International' as channel,
     NULL as is_b2b,
-    CUSTOMER as customer,
-    NULL as fulfillment_method
+    CUSTOMER as customer
 FROM internationalSales_clean;
 
+/*
 =====================================================
 VERIFICATION
 =====================================================
+*/
 
 -- Check the combined data
 SELECT 
@@ -75,3 +67,35 @@ SELECT
     MAX(sale_date) as latest_sale,
     COUNT(DISTINCT sale_date) as unique_dates
 FROM unified_sales;
+
+/*
+ =====================================================
+ Sanity checks - Is there duplicate data between Amazon Sales and International Sales tables on 3/31/22?
+ This is a fair question given the fact that another set of files in this dataset were duplicated data with different names.
+ =====================================================
+*/
+
+-- SKUs sold for Amazon vs International Sales on 3/31/2022
+SELECT 
+	SKU,
+	channel
+FROM 
+	unified_sales
+WHERE sale_date = '2022-03-31'
+ORDER BY SKU
+
+-- # transactions for Amazon vs International Sales on 3/31/2025 - use individual tables
+-- See if there are the same number of line items overall on this day
+SELECT COUNT(*) as amazon_count_03_31_22
+FROM amazonSales_clean
+WHERE sale_date = '2022-03-31';
+--171 sales
+
+-- See if there are the same number of line items overall on this day
+SELECT COUNT(*) as international_count_03_31_22
+FROM internationalSales_clean
+WHERE sale_date = '2022-03-31';
+--46 sales
+
+
+
