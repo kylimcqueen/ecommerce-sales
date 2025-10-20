@@ -37,66 +37,34 @@ For detailed SQL queries and data transformation steps, see the [Technical Docum
 
 ## Caveats and Assumptions
 
-### Temporal Coverage & Channel Overlap
+### Data Source & Scope
+- Public Kaggle dataset; company name anonymized
+- Analysis period: June 2021 - June 2022 (13 months)
+- 163,000+ transactions across two sales channels
 
-**Date Ranges:**
-- International Sales: June 2021 - March 2022 (10 months)
-- Amazon Sales: March 2022 - June 2022 (4 months)
-- **Overlap:** One day only (March 31, 2022)
+### Temporal Coverage
+- **International Sales:** June 2021 - March 2022 (10 months, 34K transactions)
+- **Amazon Sales:** March 2022 - June 2022 (4 months, 129K transactions)
+- **Minimal overlap** (1 day) prevents direct channel comparison
+- Root cause: April-May 2022 International data removed during cleaning due to 
+  corrupted file segments with missing SKU values
 
-**Root Cause:** Data cleaning removed April-May 2022 International Sales due to 
-missing SKU values (corrupted data segments identified during initial cleaning).
+### Data Completeness
+- **Category Analysis:** ~5% of sales lack matching SKU in Product Master 
+  (likely new products added after catalog snapshot); excluded from category 
+  analysis
+- **Currency:** All values assumed INR
+- **Schema Differences:** Channels have different data structures; unified 
+  on common fields (Date, SKU, Quantity, Amount)
 
-**Impact:** Direct channel comparison not feasible due to minimal temporal overlap. 
-Analysis focused on overall trends, seasonality, and category performance.
+### Analysis Focus
+Given data limitations, analysis focuses on:
+- Overall sales trends (13-month view)
+- Seasonal patterns (aggregated across channels)
+- Category performance (95% coverage)
 
-### Data Structure Challenges
-
-**Schema Differences:**
-The two sales channels have different data structures:
-- Amazon includes: Order ID, fulfillment method, B2B flag, detailed shipping info
-- International includes: Customer name, but lacks order-level identifiers
-
-**Approach:** Created a unified sales view focusing on common fields (SKU, Date, 
-Quantity, Amount, Channel) to enable time-series analysis. Channel-specific analyses were performed separately where detailed fields were needed.
-
-**International Sales Data Structure:**
-The original International Sales CSV contained corrupted data segments 
-due to improper merging of multiple data sources. The file included:
-- Rows 1-18,636: Valid sales transactions
-- Rows 18,637-18,661: Orphaned SKU list (removed)
-- Rows 18,662-19,676: Inventory stock data (removed)  
-- Rows 19,677+: Additional sales transactions with reordered columns 
-  (Restructured to match original schema)
-
-Additionally, the two valid segments of the International Sales CSV contained slightly
-different schemas. Segment 1 included a Size column whereas Segment 4 did not. Segment 4
-included a Stock column whereas Segment 1 did not. 
-
-**Cleaning approach:** Isolated valid transaction segments, standardized 
-column structure, and removed non-transactional data. Final cleaned 
-dataset still contains ~36,000 international sales transactions.
-
-**Standardization approach:** Focused on core transactional fields common 
-to both sources (Date, Customer, SKU, Quantity, Amount). Product size and Stock can 
-be retrieved by joining to Product Master via SKU when needed. 
-
-### Category Analysis Data Completeness
-
-**Missing SKU Analysis:** ~4.7% of sales lack matching SKUs in Product Master
-- 674 unique SKUs (legitimate product codes)
-- Concentrated in Amazon channel (April-June 2022)
-- Likely represents new products added after Product Master catalog snapshot
-- Excluded from category-level analysis; overall trends unaffected
-- 95.3% of sales successfully categorized
-  
-### Data Quality
-
-- **Missing Order IDs**: International sales lack order identifiers, preventing 
-  order-level analysis for that channel
-- **Date Range**: 6/5/2021 - 6/29/2022
-- **Currency**: All sales listed as INR in Amazon Sales dataset. Currency not listed in International Sales CSV. Assumed INR.
-
+*For detailed data quality assessment and cleaning decisions, see 
+[Data Quality Notes](documentation/data_quality_notes.md)*
 ---
 
 ## Technical Documentation
