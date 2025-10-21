@@ -4,7 +4,8 @@
 -- Created by: Kyli McQueen
 -- Create date: 10/15/2025
 -- Description: Create clean versions of tables with 
---              invalid primary key values removed
+--              invalid primary key values removed. I have updated amazonSales query, but not productMaster
+--				or internationalSales.
 -- =====================================================
 
 -- PRODUCT MASTER
@@ -20,7 +21,7 @@ WHERE "SKU Code" IS NOT NULL
 -- AMAZON SALES
 -- Remove rows with missing Order ID or SKU
 -- Format date column in an SQL-readable way
-CREATE TABLE amazonSales_clean AS
+CREATE TABLE amazonSales_clean_geo AS
 SELECT 
     "Order ID",
     SKU,
@@ -29,22 +30,26 @@ SELECT
     printf('%02d', CAST(substr("Date", 1, instr("Date", '/') - 1) AS INTEGER)) || '-' ||  
     printf('%02d', CAST(substr("Date", instr("Date", '/') + 1, 
                                instr(substr("Date", instr("Date", '/') + 1), '/') - 1) AS INTEGER)) AS sale_date,
-    Qty,
-    Amount,
-    Fulfilment,
-    B2B,
-    Status,
-    currency,
+    "Sales Channel" as channel,
 	Style,
+	SKU,
 	Category,
 	Size,
+	"ASIN",
+	Qty,
+	currency,
+	Amount,
+	"ship-city",
+	"ship-state",
+	"ship-country",
+	"promotion-ids",
 	B2B
 FROM amazonSales
 WHERE "Order ID" IS NOT NULL 
   AND TRIM("Order ID") != ''
   AND SKU IS NOT NULL 
   AND TRIM(SKU) != ''
-  AND Date IS NOT NULL;
+  AND "Date" IS NOT NULL;
 
 -- INTERNATIONAL SALES
 -- Remove rows with missing key fields AND non-product SKU values
