@@ -60,18 +60,18 @@ For detailed SQL queries and data transformation steps, see the [Technical Docum
 - **Category Analysis:** ~5% of sales lack matching SKU in Product Master 
   (likely new products added after catalog snapshot); excluded from category 
   analysis
-- **Currency:** All values assumed INR
-- **Schema Differences:** Channels have different data structures; unified 
-  on common fields (Date, SKU, Quantity, Amount)
 
-### Analysis Focus
-Given data limitations, analysis focuses on:
-- Overall sales trends (13-month view)
-- Seasonal patterns (aggregated across channels)
-- Category performance (95% coverage)
+### Schema Differences:
+  - Amazon: Has geographic data, lacks customer identifiers
+  - International: Has customer identifiers, lacks geographic data
+  - Unified on common fields where possible (Date, SKU, Quantity, Amount)
+
+### Currency
+- All values assumed INR (Indian Rupees)
 
 *For detailed data quality assessment and cleaning decisions, see 
 [Data Quality Notes](documentation/data_quality_notes.md)*
+
 ---
 
 ## Technical Documentation
