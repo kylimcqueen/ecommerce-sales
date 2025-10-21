@@ -69,7 +69,6 @@
 
 **For comprehensive issue tracking, see [Sales Issue Log](documentation/eCommerceSalesIssueLog.xlsx)**
 
-
 ---
 
 ## Primary Key Validation - 10/15/2025
@@ -117,6 +116,28 @@
 - Non-transactional files: 4 files excluded
 - Corrupted segments: ~1,000 rows from internationalSales
 
-***Address change in dates
+#Addressing Dataset Issues
+### Initial Assessment
+The dataset appeared to contain 13 months of continuous sales data across two channels, suitable for trend analysis and forecasting.
+
+### Critical Findings During Cleaning
+1. **Temporal Gap:** April-May 2022 International sales data was corrupted (missing SKU values in significant portions), requiring removal
+2. **Channel Overlap:** Only 1 day of overlap between channels (March 31, 2022), insufficient for comparative time-series analysis
+3. **Different Schema Strengths:** 
+   - Amazon data includes detailed geographic information
+   - International data includes customer identifiers
+   - Neither channel has both
+
+### The Decision Point
+Rather than:
+- Proceed with a flawed forecast based on insufficient temporal overlap
+- Force comparisons between incomparable time periods
+- Ignore 163,000 valid transactions
+
+I chose to:
+- Treat the channels as separate analytical opportunities
+- Leverage each dataset's unique attributes
+- Focus on insights that don't require temporal continuity
+
 
 ---
