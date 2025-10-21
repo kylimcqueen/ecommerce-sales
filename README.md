@@ -1,14 +1,21 @@
-# E-Commerce Sales Trends & Forecasting Analysis
+# E-Commerce Sales Analysis: Geographic, Customer & Product Insights
 
 ## Background and Overview
 
 This project analyzes e-commerce sales data from an Indian online fashion retailer. 
 
 ### Business Problem 
-The company needs to understand historical sales patterns to identify sales trends and seasonal patterns. Without clear visibility into sales trends, the business risks overstocking slow-moving items or running out of popular products.
+The company initially sought to understand historical sales patterns to identify trends and create forecasts. However, during data exploration and cleaning, significant data quality issues emerged that required a strategic pivot in the analysis approach.
 
-### My Goal 
-Analyze 163,000+ transactions to identify sales trends, seasonal patterns, and create a 6-month sales forecast to support data-driven inventory decisions.
+### The Pivot: From Time-Series to Multi-Dimensional Analysis
+**Original Goal:** Analyze 163,000+ transactions to identify sales trends, seasonal patterns, and create a 6-month sales forecast.
+
+**What Changed:** After extensive data cleaning, it became clear that the two sales channels had minimal temporal overlap (1 day), making traditional time-series forecasting inappropriate. Rather than force an analysis that wouldn't yield valid insights, I pivoted to extract meaningful value from what the data *could* tell us.
+
+**Revised Goal:** Conduct a three-pronged analysis that leverages each dataset's unique strengths:
+1. **Amazon Geographic Analysis** - Where are customers located and what do they buy?
+2. **International Customer Analysis** - Who are our repeat customers and what drives loyalty?
+3. **Cross-Channel Product Analysis** - How does product performance differ between channels?
 
 ### Tools Used 
 Excel (data exploration), SQL (data cleaning and transformation), Tableau (visualization and dashboards)
@@ -21,7 +28,7 @@ Excel (data exploration), SQL (data cleaning and transformation), Tableau (visua
 
 The dataset consists of 3 interconnected tables:
 
-- **International Sales** (`internationalSales`): ~37K international transactions (June 2021 - March 2022)
+- **International Sales** (`internationalSales`): ~34K international transactions (June 2021 - March 2022)
 - **Amazon Sales** (`amazonSales`): ~129K transactions from Amazon marketplace (March 2022 - June 2022)
 - **Product Master** (`productMaster`): Product catalog including SKU, category, size, color, and stock levels
 
