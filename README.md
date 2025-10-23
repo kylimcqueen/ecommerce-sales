@@ -179,18 +179,6 @@ For detailed technical implementation:
 
 ---
 
-**Project Status:** Complete
-
-**Next Steps:**
-- [X] Download and explore data
-- [X] Create ERD
-- [X] Write SQL cleaning scripts
-- [X] Build Tableau dashboard
-- [X] Complete analysis and insights
-- [X] Finalize recommendations
-
----
-
 **Connect with me:** [LinkedIn](linkedin.com/in/kylimcqueen) | [kylimcqueen@gmail.com](mailto:kylimcqueen@gmail.com)
 
 
