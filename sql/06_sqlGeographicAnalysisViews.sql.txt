@@ -1,0 +1,97 @@
+/*
+Created by: Kyli McQueen
+Create date: 10/22/2025
+Description: Analysis views for geographic questions.
+1. What do sales look like by state? 
+2. What are top performing cities/states by sales volume? 
+3. Do geographic regions show preferences for specific product categories?
+4. Are there opportunities for targeted marketing or inventory optimization by geographic region?
+*/
+
+-- View 1: Sales by State
+-- Shows total sales, transaction count, and average order value for each state
+DROP VIEW IF EXISTS v_amazon_sales_by_state;
+
+CREATE VIEW v_amazon_sales_by_state AS
+SELECT 
+    ship_state,
+    COUNT(*) as transaction_count,
+    SUM(Amount) as total_sales,
+    ROUND(AVG(Amount), 2) as avg_order_value
+FROM amazonSales_clean_geo
+GROUP BY ship_state
+ORDER BY total_sales DESC;
+
+-- View 2: Top Cities by Sales
+-- Show top 30 cities by total sales volume
+DROP VIEW IF EXISTS v_amazon_top_cities;
+
+CREATE VIEW v_amazon_top_cities AS
+SELECT 
+    ship_city,
+    ship_state,
+    COUNT(*) as transaction_count,
+    SUM(Amount) as total_sales,
+    ROUND(AVG(Amount), 2) as avg_order_value
+FROM amazonSales_clean_geo
+GROUP BY ship_city, ship_state
+ORDER BY total_sales DESC
+LIMIT 30;
+
+-- View 3: Category Performance by State
+-- Shows which product categories perform best in each state
+DROP VIEW IF EXISTS v_amazon_category_by_state;
+
+CREATE VIEW v_amazon_category_by_state AS
+SELECT 
+    sales.ship_state,
+    product.Category,
+    COUNT(*) as transaction_count,
+    SUM(sales.Amount) as total_sales,
+    ROUND(AVG(sales.Amount), 2) as avg_order_value
+FROM amazonSales_clean_geo sales
+LEFT JOIN productMaster_clean product ON sales.SKU = product."SKU Code"
+WHERE product.Category IS NOT NULL
+GROUP BY sales.ship_state, product.Category
+ORDER BY sales.ship_state, total_sales DESC;
+
+-- View 4: Geographic Distribution with Product Mix
+-- Shows what percentage of each state's sales comes from each category
+DROP VIEW IF EXISTS v_amazon_geo_product_mix;
+
+CREATE VIEW v_amazon_geo_product_mix AS
+SELECT 
+    sales.ship_state,
+    product.Category,
+    COUNT(*) as transaction_count,
+    SUM(sales.Amount) as category_sales,
+    ROUND(SUM(sales.Amount) * 100.0 / state_totals.state_total_sales, 2) as pct_of_state_sales
+FROM amazonSales_clean_geo sales
+LEFT JOIN productMaster_clean product ON sales.SKU = product."SKU Code"
+JOIN (
+    -- Subquery to get total sales per state
+    SELECT ship_state, SUM(Amount) as state_total_sales
+    FROM amazonSales_clean_geo
+    GROUP BY ship_state
+) state_totals ON sales.ship_state = state_totals.ship_state
+WHERE product.Category IS NOT NULL
+GROUP BY sales.ship_state, product.Category
+ORDER BY sales.ship_state, pct_of_state_sales DESC;
+
+-- View 5: Category Performance by City
+-- Shows which product categories perform best in top cities
+
+DROP VIEW IF EXISTS v_amazon_category_by_city;
+CREATE VIEW v_amazon_category_by_city AS
+SELECT 
+    sales.ship_city,
+	sales.ship_state,
+    product.Category,
+    COUNT(*) as transaction_count,
+    SUM(sales.Amount) as total_sales,
+    ROUND(AVG(sales.Amount), 2) as avg_order_value
+FROM amazonSales_clean_geo sales
+LEFT JOIN productMaster_clean product ON sales.SKU = product."SKU Code"
+WHERE product.Category IS NOT NULL
+GROUP BY sales.ship_city, product.Category
+ORDER BY sales.ship_city, total_sales DESC;

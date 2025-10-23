@@ -11,6 +11,8 @@ updated amazonSales query, but not productMaster or internationalSales.
 Removed blanks and nulls for these columns. Corrected naming anomalies in ship-state column.
 */
 
+--================================================================================================  
+
 -- PRODUCT MASTER
 -- Remove rows with missing SKU Code
 CREATE TABLE productMaster_clean AS
@@ -20,6 +22,8 @@ FROM productMaster
 WHERE "SKU Code" IS NOT NULL 
 	--Remove blanks
   AND TRIM("SKU Code") != '';
+
+--================================================================================================  
 
 -- AMAZON SALES
  -- Remove rows with missing Order ID or SKU
@@ -80,8 +84,41 @@ FROM amazonSales
 WHERE "Order ID" IS NOT NULL 
   AND TRIM("Order ID") != ''
   AND SKU IS NOT NULL 
-  AND TRIM(SKU) != '';
+  AND TRIM(SKU) != ''
+  AND "ship-city" IS NOT NULL
+  AND TRIM("ship-city") !=''
+  AND "ship-state" IS NOT NULL
+  AND TRIM("ship-state") !='';
   
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Checks
+
+
+--See how many distinct states there are in the dataset
+SELECT
+	COUNT(DISTINCT ship_state) as state_count
+FROM
+	amazonSales_clean_geo
+--36
+
+--Check for nulls ship_city
+SELECT COUNT(*)
+FROM amazonSales_clean_geo
+WHERE ship_city IS NULL OR ship_city = '';
+-- None
+
+--Check nulls for ship_state
+SELECT COUNT(*)
+FROM amazonSales_clean_geo
+WHERE ship_state IS NULL OR ship_state = '';
+-- None
+
+--See how many distinct cities
+SELECT COUNT(DISTINCT (ship_city)) as city_count
+FROM amazonSales_clean_geo;
+-- expect 7296 cities - yes
+
+--================================================================================================  
  -- INTERNATIONAL SALES
 -- Remove rows with missing key fields AND non-product SKU values
 -- Fomat date correctly
