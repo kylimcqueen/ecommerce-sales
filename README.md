@@ -1,24 +1,43 @@
-# E-Commerce Sales Analysis: Geographic, Customer & Product Insights
+# E-Commerce Sales Analysis: Geographic Insights for Strategic Growth
+
+## Executive Summary
+
+This project analyzes e-commerce sales data from an Indian online fashion retailer, focusing on geographic distribution and regional performance patterns. When initial time-series forecasting proved inappropriate due to data quality constraints, I pivoted to geographic analysis, uncovering actionable insights about regional sales patterns across 129,000+ Amazon transactions.
+
+### Key Findings:
+
+- **Four states drive 60%+ of revenue**: Maharashtra, Karnataka, Telangana, and Uttar Pradesh represent the company's geographic strongholds.
+- **Urban concentration**: Top 5 cities (Bengaluru, Hyderabad, Mumbai, New Delhi, Chennai) account for disproportionate sales volume while maintaining consistent average order values. 
+- **Growth opportunities identified**: High-performing cities in lower-performing states (New Delhi, Kolkata, Gurugram) present expansion opportunities. 
+- **Product uniformity**: Kurta and kurta sets dominate across all regions, suggesting consistent brand positioning nationwide.
+
+
+**Business Impact**: These insights enable targeted marketing investments, optimized inventory distribution, and strategic expansion into high-potential markets.
+
+---
 
 ## Background and Overview
 
-This project analyzes e-commerce sales data from an Indian online fashion retailer. 
+This project analyzes e-commerce sales data from an Indian online fashion retailer to understand geographic sales patterns and identify strategic growth opportunities.
 
 ### Business Problem 
 The company initially sought to understand historical sales patterns to identify trends and create forecasts. However, during data exploration and cleaning, significant data quality issues emerged that required a strategic pivot in the analysis approach.
 
-### The Pivot: From Time-Series to Multi-Dimensional Analysis
+### The Pivot: From Time-Series to Geographic Analysis
 **Original Goal:** Analyze 163,000+ transactions to identify sales trends, seasonal patterns, and create a 6-month sales forecast.
 
-**What Changed:** After extensive data cleaning, it became clear that the two sales channels had minimal temporal overlap (1 day), making traditional time-series forecasting inappropriate. Rather than force an analysis that wouldn't yield valid insights, I pivoted to extract meaningful value from what the data *could* tell us.
+**What Changed:** After extensive data cleaning, it became clear that the two sales channels had minimal temporal overlap (1 day), making traditional time-series forecasting inappropriate. Rather than force an analysis that wouldn't yield valid insights, I pivoted to extract meaningful value from what the data *could* reliably tell us.
 
-**Revised Goal:** Conduct a three-pronged analysis that leverages each dataset's unique strengths:
-1. **Amazon Geographic Analysis** - Where are customers located and what do they buy?
-2. **International Customer Analysis** - Who are our repeat customers and what drives loyalty?
-3. **Cross-Channel Product Analysis** - How does product performance differ between channels?
+**Revised Goal**: Conduct geographic analysis of Amazon sales channel to understand:
+
+1. Where customers are located and regional sales distribution
+2. Top-performing cities and states by sales volume
+3. Whether geographic regions show preferences for specific product categories
 
 ### Tools Used 
-Excel (data exploration), SQL (data cleaning and transformation), Tableau (visualization and dashboards)
+- **Excel**: Initial data exploration and quality assessment
+- **SQL**: Data cleaning, transformation and analysis queries
+- **Tableau**: Interactive dashboard creation and geographic visualization
 
 ---
 
@@ -26,21 +45,37 @@ Excel (data exploration), SQL (data cleaning and transformation), Tableau (visua
 
 ![ERD](documentation/ERD01.jpg)
 
-The dataset consists of 3 interconnected tables:
+The analysis focuses on Amazon sales data integrated with product catalog information:
 
-- **International Sales** (`internationalSales`): ~34K international transactions (June 2021 - March 2022)
 - **Amazon Sales** (`amazonSales`): ~129K transactions from Amazon marketplace (March 2022 - June 2022)
 - **Product Master** (`productMaster`): Product catalog including SKU, category, size, color, and stock levels
 
-
-*Note: Original dataset included 7 files. After data quality assessment, 
-4 files were excluded: 2 pricing files (duplicates with inconsistent 
-dates), 1 contract document, and 1 expense report. Analysis focuses on 
-transactional sales data.*
-
-For detailed SQL queries and data transformation steps, see the [Technical Documentation](sql/).
+*Note: Original dataset included multiple sales channels. After data quality assessment, analysis focuses on Amazon sales data which provided complete geographic information necessary for regional analysis. International sales channel lacked location data and was excluded from this geographic study.
+For detailed SQL queries and data transformation steps, see the Technical Documentation.*
 
 ---
+
+## Geographic Analysis Dashboard
+(image)
+
+The interactive dashboard visualizes sales distribution across India, highlighting:
+
+**State-level performance** with heat map visualization
+**Top 10 cities** by total sales volume
+
+*&Key Visual Insights**:
+
+- Strong concentration in southern and western India (Karnataka, Maharashtra, Telangana)
+- Urban metros dominate sales volume despite similar order values
+
+---
+## Geographic Insights
+
+### Business Question 1: Where are our Amazon customers located?
+
+**State-Level Performance:
+The highest total sales concentrate in four states: Maharashtra, Karnataka, Telangana, and Uttar Pradesh. These states represent the company's geographic strongholds and account for the majority of Amazon channel revenue.
+Uttar Pradesh Pattern: While Uttar Pradesh ranks as the fourth highest-performing state, its sales pattern differs from the top three. The top three states each have one dominant city driving sales, but Uttar Pradesh's performance is distributed across three cities (ranked 10th, 11th, and 12th nationally). This suggests a more geographically distributed customer base within the state.
 
 ## Caveats and Assumptions
 
@@ -89,7 +124,7 @@ For detailed technical implementation:
 - [X] Download and explore data
 - [X] Create ERD
 - [X] Write SQL cleaning scripts
-- [ ] Build Tableau dashboard
+- [X] Build Tableau dashboard
 - [ ] Complete analysis and insights
 - [ ] Finalize recommendations
 
