@@ -101,35 +101,72 @@ Average order value remains remarkably consistent across cities, despite dramati
 
 **Strategic Implication:** The company has achieved strong, consistent brand positioning. Product mix and inventory can be standardized across regions without significant customization, simplifying operations and inventory management.
 
+---
+
+## Recommendations
+
+### 1. Strengthen geographic strongholds
+
+**Target markets:** Bengaluru, Hyderabad, Mumbai, Chennai
+
+**Actions:**
+- Increase marketing spend in these high-performing cities within high-performing states.
+- Test premium product lines and new categories in these established markets.
+
+**Expected Impact:** Maximize revenue from markets with proven demand and established customer base.
+
+### 2. Pursue growth opportunities in high-potential cities
+
+**Target Markets:** New Delhi, Kolkata, Gurugram
+
+**Strategic Rationale:** These cities demonstrate strong individual performance but are located in states with otherwise lower overall performance. This represents an opportunity to replicate successful city-level strategies across the broader state.
+
+**Actions:**
+- Analyze what drives success in these cities (marketing channels, product mix, delivery experience).
+- Expand successful tactics to other cities within the same state.
+- Partner with local influencers or marketplaces in neighboring cities.
+
+**Expected Impact:** Unlock state-level growth by replicating proven urban success to surrounding markets.
+
+### 3. Investigate Uttar Pradesh's Distribution Pattern
+
+**Strategic Rationale:** UP ranks 4th in state performance but has sales distributed across three mid-tier cities rather than one dominant metro.
+
+**Actions:**
+- Research whether this reflects population distribution or market penetration gaps.
+- Test targeted campaigns in UP's tier-2 cities to determine growth ceiling.
+- Evaluate whether success in distributed markets could inform strategy in other states.
+
+**Expected Impact:** Develop playbook for success in distributed markets beyond major metros.
+
+---
+
 ## Caveats and Assumptions
 
 ### Data Source & Scope
-- Public Kaggle dataset; company name anonymized
-- Analysis period: June 2021 - June 2022 (13 months)
-- 163,000+ transactions across two sales channels
+- Public Kaggle dataset; company name anonymized.
+- Analysis period: March 2022 - June 2022 (4 months of Amazon sales data).
+- 129,000+ transactions from Amazon sales channel.
 
-### Temporal Coverage
-- **International Sales:** June 2021 - March 2022 (10 months, 34K transactions)
-- **Amazon Sales:** March 2022 - June 2022 (4 months, 129K transactions)
-- **Minimal overlap** (1 day) prevents direct channel comparison
-- Root cause: April-May 2022 International data removed during cleaning due to 
-  corrupted file segments with missing SKU values
+### Geographic Scope
+- Analysis limited to Amazon India sales data.
+- International sales channel excluded due to lack of geographic data.
+- Focus on state and city-level patterns within India.
 
 ### Data Completeness
 - **Category Analysis:** ~5% of sales lack matching SKU in Product Master 
   (likely new products added after catalog snapshot); excluded from category 
-  analysis
-
-### Schema Differences:
-  - Amazon: Has geographic data, lacks customer identifiers
-  - International: Has customer identifiers, lacks geographic data
-  - Unified on common fields where possible (Date, SKU, Quantity, Amount)
+  analysis.
+- All geographic fields complete; no missing state/city data.
 
 ### Currency
-- All values assumed INR (Indian Rupees)
+All values in INR (Indian Rupees)
 
-*For detailed data quality assessment and cleaning decisions, see 
-[Data Quality Notes](documentation/data_quality_notes.md)*
+
+*For detailed data quality assessment, see 
+[Data Quality Notes](documentation/data_quality_notes.md)
+For detailed cleaning decisions, see 
+[Issue Log](documentation/eCommerceSalesIssueLog.csv)*
 
 ---
 
@@ -142,15 +179,15 @@ For detailed technical implementation:
 
 ---
 
-**Project Status:** In Progress
+**Project Status:** Complete
 
 **Next Steps:**
 - [X] Download and explore data
 - [X] Create ERD
 - [X] Write SQL cleaning scripts
 - [X] Build Tableau dashboard
-- [ ] Complete analysis and insights
-- [ ] Finalize recommendations
+- [X] Complete analysis and insights
+- [X] Finalize recommendations
 
 ---
 
