@@ -163,7 +163,7 @@ Average order value remains remarkably consistent across cities, despite dramati
 All values in INR (Indian Rupees)
 
 
-*For detailed data quality assessment, see [Data Quality Notes](documentation/dataQualityNotes.md).
+*For detailed data quality assessment, see [Data Quality Notes](documentation/dataQualityNotes).
 For detailed cleaning decisions, see 
 [Issue Log](documentation/eCommerceSalesIssueLog.csv)*
 
