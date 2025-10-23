@@ -1,0 +1,5 @@
+customer_type,customer_count,total_revenue,avg_customer_value
+Frequent (7+),3,4402476,1467492.0
+Occasional (2-3),28,8304256,296580.57
+One-Time,83,12129565,146139.34
+Regular (4-6),10,3873042,387304.2
