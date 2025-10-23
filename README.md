@@ -56,14 +56,16 @@ For detailed SQL queries and data transformation steps, see the Technical Docume
 ---
 
 ## Geographic Analysis Dashboard
-(image)
+
+![Dashboard](visualizations/amazon_geographic_dashboard.png)
 
 The interactive dashboard visualizes sales distribution across India, highlighting:
 
 **State-level performance** with heat map visualization
+
 **Top 10 cities** by total sales volume
 
-*&Key Visual Insights**:
+**Key Visual Insights:**
 
 - Strong concentration in southern and western India (Karnataka, Maharashtra, Telangana)
 - Urban metros dominate sales volume despite similar order values
@@ -73,9 +75,31 @@ The interactive dashboard visualizes sales distribution across India, highlighti
 
 ### Business Question 1: Where are our Amazon customers located?
 
-**State-Level Performance:
-The highest total sales concentrate in four states: Maharashtra, Karnataka, Telangana, and Uttar Pradesh. These states represent the company's geographic strongholds and account for the majority of Amazon channel revenue.
-Uttar Pradesh Pattern: While Uttar Pradesh ranks as the fourth highest-performing state, its sales pattern differs from the top three. The top three states each have one dominant city driving sales, but Uttar Pradesh's performance is distributed across three cities (ranked 10th, 11th, and 12th nationally). This suggests a more geographically distributed customer base within the state.
+**State-Level Performance:** The highest total sales concentrate in four states: **Maharashtra, Karnataka, Telangana, and Uttar Pradesh**. These states represent the company's geographic strongholds and account for the majority of Amazon channel revenue.
+
+**Uttar Pradesh Pattern:** While Uttar Pradesh ranks as the fourth highest-performing state, its sales pattern differs from the top three. The top three states each have one dominant city driving sales, but Uttar Pradesh's performance is distributed across three cities (ranked 10th, 11th, and 12th nationally). This suggests a more geographically distributed customer base within the state.
+
+### Business Question 2: What are our top-performing cities and states by sales volume?
+
+**Top 5 Cities:**
+
+1. Bengaluru (Karnataka)
+2. Hyderabad (Telangana)
+3. Mumbai (Maharashtra)
+4. New Delhi (Delhi)
+5. Chennai (Tamil Nadu)
+
+**Average Order Value Analysis:**
+
+Average order value remains remarkably consistent across cities, despite dramatic differences in total sales volume. This indicates that customers in different cities spend similar amounts per order. The top-performing cities' revenue advantage comes from order frequency and customer volume, not higher spending per transaction.
+
+**Strategic Implication**: Marketing efforts should focus on customer acquisition and retention in high-potential markets rather than increasing order values, which appear stable across geographies.
+
+### Business Question 3: Do different regions show product category preferences?
+
+**Category Performance:** Kurta and kurta sets are the top sellers across all top cities and top states. Category preferences show minimal geographic variation, with trending categories remaining consistent regardless of location.
+
+**Strategic Implication:** The company has achieved strong, consistent brand positioning. Product mix and inventory can be standardized across regions without significant customization, simplifying operations and inventory management.
 
 ## Caveats and Assumptions
 
